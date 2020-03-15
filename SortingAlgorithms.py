@@ -20,7 +20,128 @@ class SortingVisualization:
         self.y = sizeY         # Length of the window
         self.gameRunning = True    # Main game loop
         self.color = colors        # Colors of the game [Background , graph ...etc]
+        # Create Values 
+    def pathFinder(self,board , position,target):
+        # Create value place
+        player = 1
+        # Change in board using value position 
+        board[ position[0]  ][ position[1]   ] = player 
 
+
+        # Count the distance between player and the target 
+        
+        stacks =[position]
+        for val in stacks:
+            # For out of bounce 
+            if ( val[0] == target[0] and val[1] == target[1]):
+                break 
+            '''
+            # The use of A* algorithm 
+            # TOP LEFT 
+            if val[0] > 0 and val[1] > 0:
+                if board[  val[0]-1  ] [ val[1]-1  ] == 0 and (board[ val[0]  ][ val[1]-1  ] == 0 and board[ val[0]-1  ][   val[1]   ] == 0):
+                    board[  val[0]-1  ] [ val[1]-1  ] +=  board[  val[0] ] [ val[1]  ] +1 
+                    stacks.append(   [val[0]-1 , val[1]-1]    )
+            # TOP RIGHT 
+            if val[0] > 0 and val[1] < len( board[ val[0]  ] )-1:
+                if board[ val[0]-1  ][   val[1]+1   ] == 0 and( board[ val[0]  ][  val[1]+1 ] == 0 or board[ val[0]-1  ][   val[1]   ] == 0):
+                    board[  val[0]-1   ][ val[1]+1 ] +=  board[ val[0]  ][ val[1]  ]+1 
+                    stacks.append([  val[0]-1,val[1]+1 ])
+            # Bottom Right 
+            if val[0] < len(board)-1 and val[1] < len(board[ val[0] ]) -1:
+                if board[ val[0]+1 ][ val[1] + 1  ] == 0 and  (board[ val[0]  ][  val[1]+1 ] == 0  or board[ val[0]+1 ][ val[1] ] == 0 ):
+                    board[ val[0]+1  ][ val[1]+ 1 ] += board[ val[0] ][ val[1] ]+1
+                    stacks.append( [ val[0]+1,val[1]+1 ] )
+            if val[0] < len(board)-1 and val[1] > 0:
+                if board[  val[0]+1 ][ val[1]-1  ] == 0 and ( board[ val[0]  ][ val[1]-1  ] == 0 or  board[ val[0]+1 ][ val[1] ] == 0):
+                    board[ val[0]+1  ][ val[1]-1 ] += board[val[0]][val[1]]+1
+                    stacks.append( [ val[0]+1 , val[1]-1 ] )
+            '''
+            
+            # TOP MIDDLE 
+            if val[0] > 0:
+                if board[ val[0]-1  ][   val[1]   ] == 0 :
+                    
+                    board[ val[0]-1 ][ val[1] ] =   board[ val[0]  ][   val[1]   ] + 1
+                    if target[0] >= val[0]-1 and val[0]-1 <= target[0]:
+                        stacks.append(  [ val[0]-1 ,    val[1]   ]   )
+
+            # MIDDLE LEFT 
+            if val[1] > 0 :
+                if board[ val[0]  ][ val[1]-1  ] == 0:
+                    board[ val[0]  ][ val[1]-1  ] =  board[ val[0]  ][ val[1] ] +1
+                    stacks.append( [ val[0], val[1]-1 ])
+
+            # Middle Right 
+            if val[1] < len(board[ val[0]  ])-1:
+                if board[ val[0]  ][  val[1]+1 ] == 0:
+                    board[ val[0] ][ val[1]+1 ] = board[val[0]][val[1]]+1 
+                    stacks.append( [ val[0], val[1]+1  ]  )
+            
+                
+            
+            # Bottom center
+            if val[0] < len(board)-1:
+                if   board[ val[0]+1 ][ val[1] ] == 0:
+                    board[ val[0]+1 ][ val[1] ] = board[ val[0] ][ val[1]  ]+1
+                    stacks.append(  [ val[0]+1  , val[1] ] )
+        
+
+            if ( val[0] == target[0] and val[1] == target[1]):
+                break 
+            prints1(board)
+            os.system('cls')
+            
+
+        # GET THE VALUE POSITION OF THE TARGET and put them to stack 
+        prints(board)
+        print()
+        stacks = [ target]
+        point =  board[ target[0] ][ target[1] ]
+        board[ target[0] ][ target[1] ] = '#'
+        for val in stacks:
+
+            if val[0] > 0:
+                if board[ val[0]-1  ][   val[1]   ] != '#' and board[ val[0]-1  ][   val[1]   ] != -1:
+                    if board[ val[0]-1  ][   val[1]   ] != 0 and board[ val[0]-1  ][   val[1]   ] < point :
+                        board[ val[0]-1 ][ val[1] ] =   '#'
+                        stacks.append(  [ val[0]-1 ,    val[1]   ]   )
+                        point -=1 
+
+            # MIDDLE LEFT 
+            if val[1] > 0 :
+                if board[ val[0]  ][ val[1]-1  ] !='#' and  board[ val[0]  ][ val[1]-1  ] != -1 :
+                    if board[ val[0]  ][ val[1]-1  ] != 0 and board[ val[0]  ][ val[1]-1  ] < point:
+                        board[ val[0]  ][ val[1]-1  ] =  '#' #board[ val[0]  ][ val[1] ] +1
+                        stacks.append( [ val[0], val[1]-1 ])
+                        point -=1 
+
+            # Middle Right 
+            if val[1] < len(board[ val[0]  ])-1  :
+                
+                if board[ val[0]  ][  val[1]+1 ] != '#' and board[ val[0]  ][  val[1]+1 ] != -1 : 
+                    if board[ val[0]  ][  val[1]+1 ] != 0 and  board[ val[0]  ][  val[1]+1 ] < point :
+                        board[ val[0] ][ val[1]+1 ] = '#'
+                        stacks.append( [ val[0], val[1]+1  ]  )
+                        point -=1 
+            
+                
+            
+            # Bottom center
+            if val[0] < len(board)-1:
+                #prints(board)
+                if board[ val[0]+1 ][ val[1] ] != '#' and board[ val[0]+1 ][ val[1] ] != -1 :
+                    if  board[ val[0]+1 ][ val[1] ] != 0 and board[ val[0]+1 ][ val[1] ] < point:
+                        board[ val[0]+1 ][ val[1] ] = '#'
+                        stacks.append(  [ val[0]+1  , val[1] ] )
+                        point -=1 
+            if (board[ val[0] ][ val[1] ] == 1 ):
+                break
+        
+        
+            prints(board)
+            os.system('cls')
+        
     # Method to quit the game 
     def pygameQuit(self):
         for event in pygame.event.get():
