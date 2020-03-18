@@ -41,7 +41,7 @@ public class LinkedList {
     public static SinglyLinkedList<Integer> singly = new SinglyLinkedList<>();
     public static DoublyLinkedList<Integer> doubly = new DoublyLinkedList<>(); 
     public static void main(String[] args) {
-        System.out.println("Hell");
+        System.out.println("Hello world");
        
     }
 }
