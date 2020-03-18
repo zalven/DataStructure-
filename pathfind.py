@@ -255,6 +255,7 @@ class pathFinder:
                 try: 
                     if self.board [ pos[1]//35 ][pos[0]//35] <=1 :
                         self.board [  pos[1]//35 ] [  pos[0]//35 ]   = self.pick 
+                        
                 except:
                     pass
                         
